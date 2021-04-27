@@ -16,5 +16,10 @@ describe Morse do
       encoder = Morse::Encoder.new("table/test.json")
       encoder.encode(text).should eq("(^_^)(^_^)(>_<)")
     end
+
+    it "can encode text from class method" do
+      text = "ababbb"
+      Morse::Encoder.encode("table/test.json", text).should eq("(^_^)(^_^)(>_<)")
+    end
   end
 end

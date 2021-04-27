@@ -1,4 +1,5 @@
 require "json"
+require "string_scanner"
 
 module Morse
   VERSION = "0.1.0"
@@ -11,34 +12,36 @@ module Morse
     property conversion_table : Hash(String, String)
 
     def generate_regex
-      conversion_table.keys.map { |key| /^#{key}/}.reduce { |res, regex| res + regex }
+      conversion_table.keys.map { |key| /#{key}/i }.reduce { |res, regex| res + regex }
     end
   end
 
   class Encoder
-    def initialize(
-      @table : Table,
-      @regex : Regex)
+    def initialize(@table : Table, @regex : Regex)
     end
 
     def initialize(table_path : String)
-      abort "missing file" if !File.file?(table_path)
-      @table = Table.from_json(File.read(table_path))
+      @table = Table.from_json(load_table(table_path))
       @regex = @table.generate_regex
     end
 
-    def self.encode(text : String, table : Table)
-      self.new(table).encode(text)
+    def self.encode(table_path : String, text : String)
+      self.new(table_path).encode(text)
     end
 
     def encode(text : String)
       res = ""
-      while md = @table.generate_regex.match(text)
-        res += @table.conversion_table[md[0]]
-        text = text[md.end(0)..-1]
+      scanner = StringScanner.new(text)
+
+      while e = scanner.scan(@regex)
+        res += @table.conversion_table[e]
       end
- 
+
       res
+    end
+
+    private def load_table(table_path)
+      File.read(table_path)
     end
   end
 
