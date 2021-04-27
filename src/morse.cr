@@ -35,6 +35,7 @@ module Morse
 
       while e = scanner.scan(@regex)
         res += @table.conversion_table[e]
+        break if scanner.eos?
       end
 
       res
