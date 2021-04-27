@@ -23,8 +23,8 @@ module Morse
       self.new(table).encode(text)
     end
 
-    def decode(text : String)
-
+    def encode(text : String)
+      
     end
   end
 
