@@ -1,0 +1,8 @@
+{
+  "from" : "en",
+  "to" : "kao-moji",
+  "conversion_table" : {
+    "ab" : "(^_^)",
+    "bb" : "(>_<)"
+  }
+}

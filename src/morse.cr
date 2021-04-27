@@ -6,8 +6,13 @@ module Morse
   struct Table
     include JSON::Serializable
 
-    property language : String
+    property from : String
+    property to : String
     property conversion_table : Hash(String, String)
+
+    def generate_regex
+      conversion_table.keys.map { |key| /^#{key}/}.reduce { |res, regex| res + regex }
+    end
   end
 
   class Encoder
@@ -24,7 +29,14 @@ module Morse
     end
 
     def encode(text : String)
-      
+      res = ""
+
+      while @table.generate_regex =~ text
+        res += @table.conversion_table[$~[0]]
+        text = text[$~.end(0)..-1]
+      end
+        
+      res
     end
   end
 
@@ -42,7 +54,6 @@ module Morse
     end
 
     def decode(text : String)
-      
     end
   end
 end
