@@ -22,4 +22,12 @@ describe Morse do
       Morse::Encoder.encode("table/test.json", text).should eq("(^_^)(^_^)(>_<)")
     end
   end
+
+  describe "Decoder" do
+    it "can decode text" do
+      text = "(^_^)(^_^)(>_<)"
+      decoder = Morse::Decoder.new("table/test.json")
+      decoder.decode(text).should eq("ababbb")
+    end
+  end
 end
