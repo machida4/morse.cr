@@ -13,8 +13,7 @@ describe Morse do
   describe "Encoder" do
     it "can encode text" do
       text = "ababbb"
-      table = Morse::Table.from_json(File.read("table/test.json")) 
-      encoder = Morse::Encoder.new(table)
+      encoder = Morse::Encoder.new("table/test.json")
       encoder.encode(text).should eq("(^_^)(^_^)(>_<)")
     end
   end

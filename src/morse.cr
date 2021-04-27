@@ -16,12 +16,15 @@ module Morse
   end
 
   class Encoder
-    def initialize(@table : Table)
+    def initialize(
+      @table : Table,
+      @regex : Regex)
     end
 
     def initialize(table_path : String)
       abort "missing file" if !File.file?(table_path)
       @table = Table.from_json(File.read(table_path))
+      @regex = @table.generate_regex
     end
 
     def self.encode(text : String, table : Table)
@@ -30,12 +33,11 @@ module Morse
 
     def encode(text : String)
       res = ""
-
-      while @table.generate_regex =~ text
-        res += @table.conversion_table[$~[0]]
-        text = text[$~.end(0)..-1]
+      while md = @table.generate_regex.match(text)
+        res += @table.conversion_table[md[0]]
+        text = text[md.end(0)..-1]
       end
-        
+ 
       res
     end
   end
