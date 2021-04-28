@@ -15,7 +15,8 @@ module Morse
     def initialize(
       @from : String,
       @to : String,
-      @conversion_table : Hash(String, String))
+      @conversion_table : Hash(String, String)
+    )
     end
 
     def inverted_conversion_table
@@ -41,7 +42,7 @@ module Morse
     @regex : Regex
 
     def initialize(table_path : String)
-      table =  Table.from_json(load_table(table_path))
+      table = Table.from_json(load_table(table_path))
       @conversion_table = table.conversion_table
       @regex = table.regex
     end
@@ -72,7 +73,7 @@ module Morse
     @regex : Regex
 
     def initialize(table_path : String)
-      table =  Table.from_json(load_table(table_path))
+      table = Table.from_json(load_table(table_path))
       @conversion_table = table.inverted_conversion_table
       @regex = table.inverted_regex
     end
